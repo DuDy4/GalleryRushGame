@@ -1,21 +1,13 @@
 from fastapi import APIRouter
 from loguru import logger
-from services.grid import GridService
+from services.grid_service import GridService
 from api.api_response_models import GridResponse
 
 router = APIRouter(prefix="/api")
 
 grid_service = GridService()
 
-@router.get("/randomize", response_model=GridResponse)
-def get_random_grid() -> GridResponse:
-    """
-    Get a new randomize grid_service.py.
-    """
-    logger.info(f"Got a randomize grid request")
-    return GridResponse.from_grid(grid_service.randomize_grid())
-
-@router.get("/randomize", response_model=GridResponse)
+@router.post("/randomize", response_model=GridResponse)
 def get_random_grid() -> GridResponse:
     """
     Get a new randomize grid_service.py.
@@ -40,5 +32,4 @@ def clear_grid() -> GridResponse:
     Clear the grid to all zeros.
     """
     logger.info("Received request: /clear")
-    grid_service.grid = [[0 for _ in range(len(grid_service.grid))] for _ in range(len(grid_service.grid))]
-    return GridResponse.from_grid(grid_service.grid)
+    return GridResponse.from_grid(grid_service.clear())

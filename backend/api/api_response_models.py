@@ -7,5 +7,5 @@ class GridResponse(BaseModel):
 
     @classmethod
     def from_grid(cls, grid: List[List[int]]):
-        return GridResponse(grid=grid)
+        return cls(grid=grid)
 
