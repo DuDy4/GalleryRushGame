@@ -1,7 +1,7 @@
 from typing import List
 from random import randint
 
-CURRENT_SIZE = 4
+CURRENT_SIZE = 20
 
 # grid = [[0 for _ in range(CURRENT_SIZE)] for _ in range(CURRENT_SIZE)]
 class GridService:

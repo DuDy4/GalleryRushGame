@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import ButtonsLayout from "../components/ButtonsLayout"
 import { useGrid } from "../providers/GridProvider"
+import GridDisplay from "../components/GridDisplay.tsx";
 
 const GRID_SIZE = 20
 
@@ -33,6 +34,16 @@ export default function ArtGalleryPage() {
       </p>
 
       <ButtonsLayout />
+
+          <div
+              className="grid gap-[1px]"
+              style={{
+                  gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(0, 1fr))`,
+                  width: "fit-content",
+              }}
+          >
+              <GridDisplay/>
+          </div>
     </div>
   )
 }
