@@ -40,7 +40,7 @@ export default function ButtonsLayout() {
           color={isPlaying ? "error" : "primary"}
           startIcon={isPlaying ? <Pause /> : <PlayArrow />}
         >
-          {isPlaying ? "Pause" : "Play"} (Space)
+          {isPlaying ? "Pause" : "Play"} (p)
         </Button>
       </Stack>
 

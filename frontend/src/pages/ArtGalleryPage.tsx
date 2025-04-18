@@ -18,7 +18,7 @@ export default function ArtGalleryPage() {
         case "r": randomize(); break
         case "c": clear(); break
         case "s": step(); break
-        case " ": togglePlay(); break
+        case "p": togglePlay(); break
       }
     }
 
@@ -30,7 +30,6 @@ export default function ArtGalleryPage() {
     <div className="flex flex-col items-center min-h-screen p-4 bg-gray-50">
       <h1 className="text-3xl font-bold mb-2 text-gray-800">Art Gallery District</h1>
       <p className="text-gray-600 mb-6 text-center max-w-2xl">
-        A simulation of art galleries opening and closing based on Conway&apos;s Game of Life rules.
       </p>
 
       <ButtonsLayout />
