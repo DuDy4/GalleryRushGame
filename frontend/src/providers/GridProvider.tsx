@@ -36,6 +36,7 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const res = await axios.post(`${API_BASE}${endpoint}`)
       setGrid(res.data.grid)
+      setStepCount(res.data.steps)
     } catch (err) {
       console.error(`Failed to fetch ${endpoint}`, err)
     }
@@ -43,17 +44,29 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
 
   const randomize = () => {
     fetchGrid("/randomize")
-    setStepCount(0)
+    // setStepCount(0)
   }
 
   const clear = () => {
     fetchGrid("/clear")
-    setStepCount(0)
+    // setStepCount(0)
   }
 
   const step = () => {
     fetchGrid("/next")
-    setStepCount((prev) => prev + 1)
+    // setStepCount((prev) => prev + 1)
+  }
+
+
+  //This is the request for the current grid
+  const touch = async () => {
+    try {
+      const res = await axios.get(`${API_BASE}/`)
+      setGrid(res.data.grid)
+      setStepCount(res.data.steps)
+    } catch (err) {
+      console.error(`Failed to fetch current `, err)
+    }
   }
 
   const togglePlay = () => {
@@ -69,7 +82,7 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   useEffect(() => {
-    randomize()
+    touch()
   }, [])
 
   useEffect(() => {

@@ -8,9 +8,11 @@ class GridService:
 
     def __init__(self):
         self.grid = self.randomize_grid()
+        self.steps = 0
 
     def randomize_grid(self) -> List[List[int]]:
         self.grid = [[randint(0,1) for _ in range(CURRENT_SIZE)] for _ in range(CURRENT_SIZE)]
+        self.steps = 0
         return self.grid
 
     def count_neighbors(self, grid: List[List[int]], x: int, y: int) -> int:
@@ -38,6 +40,7 @@ class GridService:
                     if neighbors == 3:
                         new_grid[i][j] = 1
         self.grid = new_grid
+        self.steps += 1
         return self.grid
 
     def print_grid(self, grid: List[List[int]]) -> None:
@@ -47,5 +50,6 @@ class GridService:
 
     def clear(self):
         self.grid = [[0 for _ in range(len(self.grid))] for _ in range(len(self.grid))]
+        self.steps = 0
         return self.grid
 
