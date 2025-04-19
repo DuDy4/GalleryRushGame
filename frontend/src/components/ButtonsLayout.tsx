@@ -78,7 +78,7 @@ export default function ButtonsLayout() {
           Generation: <b>{stepCount}</b>
         </Typography>
         <Typography variant="body2">
-          Active Galleries: <b>{grid.flat().filter(Boolean).length}</b>
+          Active Galleries: <b>{grid && grid.flat().filter(Boolean).length}</b>
         </Typography>
       </Stack>
     </Stack>
