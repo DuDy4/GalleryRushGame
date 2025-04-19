@@ -1,20 +1,27 @@
-🖼️ Gallery Rush
-Gallery Rush is a simulation-style game. The grid represents a network of art galleries — evolving over time according to predefined logic and user actions.
+# 🖼️ Gallery Rush
 
-Built as a Fullstack web app using FastAPI, React (Typescript) & Docker.
+**Gallery Rush** is a simulation-style game. The grid represents a network of art galleries — evolving over time according to predefined logic and user actions.
 
-You can see deployment here: 'https://gallery-rush-game.vercel.app/'
-(might need to wait 15 seconds for backend to warm-up here: 'https://galleryrushgame.onrender.com/')
+Built as a Fullstack web app using **FastAPI**, **React (TypeScript)**, and **Docker**.
 
-🛠️ Getting Started
-1. Clone the repository
+📍 **Live deployment**:
+- 🟢 Frontend: [https://gallery-rush-game.vercel.app/](https://gallery-rush-game.vercel.app/)
+- 🔵 Backend: [https://galleryrushgame.onrender.com/](https://galleryrushgame.onrender.com/) (may take ~15s to wake up)
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Clone the repository
+
+```bash
 git clone git@github.com:DanShevel/GalleryRushGame.git
 cd GalleryRushGame
 
-3. Run docker:
+3. Run Docker:
 There is a script for bash or powershell.
 Bash: ./start.sh
-Powershell: .\start.sp1
+Powershell: .\start.ps1
 
 This should:
 I. Run the pytest on the backend.
@@ -25,6 +32,23 @@ III. Run the two images.
 
 🔵 Backend: http://localhost:8000
 
+4. Without Docker?
+Run in separate terminals:
+
+    cd ./backend
+    pip i -f requirements.txt
+    python ./start_api.py
+
+    &
+
+    cd ./frontend
+    npm i
+    npm run build
+    npm run dev
+
+🟢 Frontend: http://localhost:5173
+
+🔵 Backend: http://localhost:8000
 
 📦 Project Structure
 GalleryRushGame/
@@ -33,7 +57,7 @@ GalleryRushGame/
 ├── frontend/        # React + Vite
 │   └── src/         # Grid UI and controls
 ├── docker-compose.yml
-└── README.md (You are here :P )
+└── README.md (<- You are here :P )
 
 
 🧪 API Endpoints (visit http://localhost:8000 for swagger)
