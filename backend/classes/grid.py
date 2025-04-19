@@ -1,7 +1,7 @@
 from utils.models import GridType
 from random import randint
 
-CURRENT_SIZE = 4
+CURRENT_SIZE = 20
 
 class Grid:
 
