@@ -53,3 +53,7 @@ class GridService:
         self.steps = 0
         return self.grid
 
+    def update_cell(self, i, j):
+        self.grid[i][j] = abs(self.grid[i][j] - 1)
+
+

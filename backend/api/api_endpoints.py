@@ -61,7 +61,7 @@ async def update_grid(request: Request) -> JSONResponse | HTTPException:
 
         i, j = position[0], position[1]
         logger.debug(grid_service.grid[i][j])
-        grid_service.grid[i][j] = abs(grid_service.grid[i][j] - 1)
+        grid_service.update_cell(i, j)
         logger.debug(grid_service.grid[i][j])
 
         return JSONResponse(status_code=200, content="Updated grid successfully")
