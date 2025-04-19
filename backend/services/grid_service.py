@@ -19,12 +19,20 @@ class GridService:
 
 
     def next_step(self) -> [GridType, int, bool]:
-        try:
-            self.grid_memo.push(GridNode(self.grid_instance.grid))
-            return self.grid_instance.next_step()
-        except WinException as e:
-            reason = self.handle_win_condition(e)
+        """
+        This method does 3 main function:
+        1. Update the in memory.
+        2. Update the grid to the next step.
+        3. **secretly** handle win condition.
+        :return:
+        """
+
+        duplicate = self.grid_memo.push(GridNode(self.grid_instance.grid))
+        if duplicate:
+            # It means that there was a win condition
+            reason: WinReason = self.handle_win_condition()
             raise WinException(reason)
+        return self.grid_instance.next_step()
 
     def previous_step(self) -> [GridType, int, bool]:
         if self.grid_instance.steps <= 0 or self.grid_memo.length <= 0:
@@ -42,7 +50,7 @@ class GridService:
     def update_wrap(self):
         self.grid_instance.update_wrap()
 
-    def handle_win_condition(self, error: WinException):
+    def handle_win_condition(self) -> WinReason:
         current_grid = self.grid_instance.grid
         last_grid_node = self.grid_memo.head  # The last node inserted - if there is one
 

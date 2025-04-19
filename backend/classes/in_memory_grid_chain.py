@@ -34,19 +34,27 @@ class InMemoryGridChain:
         grid_hash = self.hash_grid(grid)
         self.hash_set.remove(grid_hash)
 
-    def push(self, node: GridNode) -> None:
+    def push(self, node: GridNode) -> bool:
+        """
+        This method does two main functions:
+        1. Push the node to the stack.
+        2. **secretly** check for win conditions, and return True upward.
+
+        :param node:
+        :return: bool:
+        """
         if self.check_win(node.grid):
-            raise WinException()
+            return True
         if not isinstance(node,GridNode):
-            return
+            return False
         if not self.head:
             self.head = node
             self.length += 1
-            return
+            return False
         node.next = self.head
         self.head = node
         self.length += 1
-        return
+        return False
 
     def pop(self) -> GridType:
         if not self.head:

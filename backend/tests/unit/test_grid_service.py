@@ -1,5 +1,8 @@
 import pytest
 
+from backend.utils.models import WinException, WinReason
+
+
 @pytest.mark.parametrize("grid_fixture_name", [
     "sample_grid",
     "diagonal_grid",
@@ -82,6 +85,7 @@ def test_wrap_affects_grid_evolution(grid_service, edge_pattern_grid):
     assert grid_service.grid_instance.wrap == False
     grid_service.next_step()
 
+
     grid = grid_service.get_grid_attributes()[0]
     # The edge cells should die without wrapping
     assert grid[1][0] == 0
@@ -89,6 +93,7 @@ def test_wrap_affects_grid_evolution(grid_service, edge_pattern_grid):
     assert grid[3][0] == 0
     
     # Test with wrapping
+    grid_service.grid_memo.reset()
     grid_service.grid_instance.grid = edge_pattern_grid
     grid_service.update_wrap()
     assert grid_service.grid_instance.wrap == True

@@ -1,6 +1,8 @@
 from fastapi.testclient import TestClient
 from start_api import app
 
+from backend.utils.models import WinReason
+
 client = TestClient(app)
 
 def test_get_current_grid():
@@ -93,3 +95,78 @@ def test_wrap_endpoint_toggles_wrap_state():
     assert res.status_code == 200
     data = res.json()
     assert data["wrap"] == initial_wrap
+
+
+def test_win_state_extinction():
+    """
+    This should return the WinReason.EXTINCTION value
+    """
+    res = client.post("/api/clear")
+    assert res.status_code == 200
+    res = client.post("/api/next")
+    assert res.status_code == 200
+    data = res.json()
+    assert "win_reason" not in data.keys()
+
+    # Now we should get the winReason
+    res = client.post("/api/next")
+    data = res.json()
+    assert "win_reason" in data.keys()
+    assert data["win_reason"] == WinReason.EXTINCTION.value
+
+def test_win_state_static():
+    """
+    This should return the WinReason.STATIC value
+    """
+    res = client.post("/api/clear")
+    assert res.status_code == 200
+    res = client.put("/api/update", json={"position": [0,0]})
+    assert res.status_code == 200
+    res = client.put("/api/update", json={"position": [1,0]})
+    assert res.status_code == 200
+    res = client.put("/api/update", json={"position": [0,1]})
+    assert res.status_code == 200
+    res = client.put("/api/update", json={"position": [1,1]})
+    assert res.status_code == 200
+
+    res = client.post("/api/next")
+    assert res.status_code == 200
+    data = res.json()
+    assert "win_reason" not in data.keys()
+
+    # Now we should get the winReason
+    res = client.post("/api/next")
+    data = res.json()
+    assert "win_reason" in data.keys()
+    assert data["win_reason"] == WinReason.STATIC.value
+
+
+def test_win_state_cycle():
+    """
+    This should return the WinReason.STATIC value
+    """
+    res = client.post("/api/clear")
+    assert res.status_code == 200
+    res = client.put("/api/update", json={"position": [0,1]})
+    assert res.status_code == 200
+    res = client.put("/api/update", json={"position": [1,1]})
+    assert res.status_code == 200
+    res = client.put("/api/update", json={"position": [2,1]})
+    assert res.status_code == 200
+
+
+    res = client.post("/api/next")
+    assert res.status_code == 200
+    data = res.json()
+    assert "win_reason" not in data.keys()
+
+    res = client.post("/api/next")
+    assert res.status_code == 200
+    data = res.json()
+    assert "win_reason" not in data.keys()
+
+    # Now we should get the winReason
+    res = client.post("/api/next")
+    data = res.json()
+    assert "win_reason" in data.keys()
+    assert data["win_reason"] == WinReason.CYCLE.value

@@ -12,3 +12,4 @@ class WinException(Exception):
 
     def __init__(self, reason: WinReason = None):
         self.reason: WinReason | None = reason
+        super().__init__(reason.value if reason else "Game won")
