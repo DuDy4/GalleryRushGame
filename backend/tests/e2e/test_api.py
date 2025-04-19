@@ -72,3 +72,24 @@ def test_updating_grid():
 
     after_toggle2 = client.get("/api/").json()["grid"]
     assert after_toggle2[i][j] == 0
+
+def test_wrap_endpoint_toggles_wrap_state():
+    """
+    Test that the wrap endpoint toggles the wrap state and returns the correct grid response.
+    """
+    # Get initial state
+    initial_state = client.get("/api/").json()
+    initial_wrap = initial_state["wrap"]
+    
+    # Toggle wrap state
+    res = client.post("/api/wrap")
+    assert res.status_code == 200
+    data = res.json()
+    assert "wrap" in data
+    assert data["wrap"] == (not initial_wrap)
+    
+    # Toggle back
+    res = client.post("/api/wrap")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["wrap"] == initial_wrap

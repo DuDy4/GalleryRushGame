@@ -46,3 +46,12 @@ def full_grid():
         [1, 1, 1, 1],
         [1, 1, 1, 1]
     ]
+
+@pytest.fixture
+def edge_pattern_grid():
+    return [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [1, 1, 0, 1],
+        [0, 0, 0, 0]
+    ]

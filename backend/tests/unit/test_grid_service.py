@@ -59,3 +59,54 @@ def test_update_cell_toggles_value_correctly(grid_service):
     assert grid_service.grid[0][1] == 0
     assert grid_service.grid[1][0] == 0
     assert grid_service.grid[1][1] == 0
+
+def test_update_wrap_toggles_wrap_state(grid_service):
+    """
+    Test that update_wrap toggles the wrap state correctly.
+    """
+    initial_wrap = grid_service.wrap
+    
+    # Toggle wrap state
+    grid_service.update_wrap()
+    assert grid_service.wrap == (not initial_wrap)
+    
+    # Toggle back
+    grid_service.update_wrap()
+    assert grid_service.wrap == initial_wrap
+
+def test_wrap_affects_grid_evolution(grid_service, edge_pattern_grid):
+    """
+    Test that wrapping affects the grid evolution by using a pattern that would die without wrapping
+    but survive with wrapping.
+
+    Edge pattern grid:
+        [0, 0, 0, 0]
+        [0, 0, 0, 0]
+        [1, 1, 0, 1]
+        [0, 0, 0, 0]
+
+    Edge pattern grid with wrapping:
+        [0, 0, 0, 0]
+        [1, 0, 0, 0]
+        [1, 0, 0, 0]
+        [1, 0, 0, 0]
+    """
+    # Test without wrapping
+    grid_service.grid = edge_pattern_grid
+    grid_service.wrap = False
+    grid_service.next_step()
+    
+    # The edge cells should die without wrapping
+    assert grid_service.grid[1][0] == 0
+    assert grid_service.grid[2][0] == 0
+    assert grid_service.grid[3][0] == 0
+    
+    # Test with wrapping
+    grid_service.grid = edge_pattern_grid
+    grid_service.wrap = True
+    grid_service.next_step()
+    
+    # With wrapping, the pattern should survive
+    assert grid_service.grid[1][0] == 1
+    assert grid_service.grid[2][0] == 1
+    assert grid_service.grid[3][0] == 1
