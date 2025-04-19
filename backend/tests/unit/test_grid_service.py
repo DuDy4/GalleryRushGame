@@ -1,9 +1,4 @@
 import pytest
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from backend.services.grid_service import GridService
 
 
 @pytest.mark.parametrize("grid_fixture_name", [
@@ -40,12 +35,11 @@ def test_randomize_grid_creates_valid_grid(grid_service):
     assert all(len(row) == len(grid[0]) for row in grid)
     assert all(cell in [0, 1] for row in grid for cell in row)
 
-def test_update_cell_toggles_value_correctly():
+def test_update_cell_toggles_value_correctly(grid_service):
     """
     Test that update_cell toggles 0 to 1 and 1 to 0 as expected.
     """
     # Start with a clean grid
-    grid_service = GridService()
     grid_service.grid = [
         [0, 0],
         [0, 0]
