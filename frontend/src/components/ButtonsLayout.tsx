@@ -1,11 +1,12 @@
 import { Button, Slider, Stack, Typography } from "@mui/material"
-import { PlayArrow, Pause, Refresh, Replay, Close } from "@mui/icons-material"
+import { PlayArrow, Pause, Refresh, Replay, Close, Loop } from "@mui/icons-material"
 import { useGrid } from "../providers/GridProvider"
 import { useEffect } from "react";
 
 export default function ButtonsLayout() {
   const {
     isPlaying,
+    isWrapped,
     speed,
     setSpeed,
     stepCount,
@@ -14,6 +15,7 @@ export default function ButtonsLayout() {
     clear,
     step,
     togglePlay,
+    toggleWrap,
   } = useGrid()
 
   //This useEffect start listening to keyboard for the keys we defined -
@@ -26,6 +28,7 @@ export default function ButtonsLayout() {
         case "r": randomize(); break
         case "c": clear(); break
         case "s": step(); break
+        case "w": toggleWrap(); break
         case "p": togglePlay(); break
       }
     }
@@ -59,6 +62,14 @@ export default function ButtonsLayout() {
           startIcon={isPlaying ? <Pause /> : <PlayArrow />}
         >
           {isPlaying ? "Pause" : "Play"} (p)
+        </Button>
+        <Button
+            onClick={toggleWrap}
+            variant={isWrapped ? "contained" : "outlined"}
+            color={isWrapped ? "error" : "primary"}
+            startIcon={<Loop />}
+        >
+          {isWrapped ? "Unwrap" : "Wrap"} (w)
         </Button>
       </Stack>
 

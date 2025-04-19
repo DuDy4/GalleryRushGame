@@ -7,12 +7,14 @@ type GridContextType = {
   grid: boolean[][]
   stepCount: number
   isPlaying: boolean
+  isWrapped: boolean
   speed: number
   setSpeed: (s: number) => void
   randomize: () => void
   clear: () => void
   step: () => void
   togglePlay: () => void
+  toggleWrap: () => void
   toggleCell: (i: number, j: number) => void
 }
 
@@ -28,6 +30,7 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
   const [grid, setGrid] = useState<boolean[][]>([])
   const [stepCount, setStepCount] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isWrapped, setIsWrapped] = useState(false)
   const [speed, setSpeed] = useState(1)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -36,6 +39,7 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
       const res = await axios.post(`${API_BASE}${endpoint}`)
       setGrid(res.data.grid)
       setStepCount(res.data.steps)
+      setIsWrapped(res.data.wrap)
     } catch (err) {
       console.error(`Failed to fetch ${endpoint}`, err)
     }
@@ -43,17 +47,18 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
 
   const randomize = () => {
     fetchGrid("/randomize")
-    // setStepCount(0)
   }
 
   const clear = () => {
     fetchGrid("/clear")
-    // setStepCount(0)
   }
 
   const step = () => {
     fetchGrid("/next")
-    // setStepCount((prev) => prev + 1)
+  }
+
+  const wrap = async () => {
+    await fetchGrid("/wrap")
   }
 
 
@@ -70,6 +75,10 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
 
   const togglePlay = () => {
     setIsPlaying((prev) => !prev)
+  }
+
+  const toggleWrap = async () => {
+    await wrap()
   }
 
   const update = async (i: number, j: number) => {
@@ -116,6 +125,7 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
         grid,
         stepCount,
         isPlaying,
+        isWrapped,
         speed,
         setSpeed,
         randomize,
@@ -123,6 +133,7 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
         step,
         togglePlay,
         toggleCell,
+        toggleWrap,
       }}
     >
       {children}

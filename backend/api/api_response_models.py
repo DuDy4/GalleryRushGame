@@ -5,8 +5,9 @@ from pydantic import BaseModel
 class GridResponse(BaseModel):
     grid: Grid
     steps: int
+    wrap: bool
 
     @classmethod
-    def from_grid(cls, grid: Grid, steps):
-        return cls(grid=grid, steps=steps)
+    def from_grid(cls, grid: Grid, steps, wrap):
+        return cls(grid=grid, steps=steps, wrap=wrap)
 

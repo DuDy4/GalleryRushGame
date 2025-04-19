@@ -9,7 +9,8 @@ class GridService:
 
     def __init__(self):
         self.grid: Grid = self.randomize_grid()
-        self.steps = 0
+        self.steps: int = 0
+        self.wrap: bool = False
 
     def randomize_grid(self) -> Grid:
         self.grid = [[randint(0,1) for _ in range(CURRENT_SIZE)] for _ in range(CURRENT_SIZE)]
@@ -42,8 +43,11 @@ class GridService:
         def count_neighbors(grid: Grid, x: int, y: int) -> int:
             """
             For every cell, check all adjust cells in a 9X9 (skip itself - i=0, j=0).
-            Count the sum of all, and if it is 4 or more - we can    break the check ->
+            Count the sum of all of them, and if it is 4 or more - we can break the check ->
             the gallery should be closed...
+
+            Conditional check: If `self.wrap` is enabled, it wraps around the grid edges (toroidal logic).
+            If wrapping is off, it doesn't count out-of-bounds neighbors.
 
             :param grid:
             :param x:
@@ -59,8 +63,15 @@ class GridService:
                         continue
                     # nx, ny present the current neighbour position (original cell + i/j)
                     nx, ny = x + i, y + j
-                    if 0 <= nx < len(grid) and 0 <= ny < len(grid):
+                    if self.wrap:
+                        # Add i and j to indexes, and modulo by the number of cells to get to "the other side"
+                        nx %= len(self.grid)
+                        ny %= len(self.grid[0])
                         count += grid[nx][ny]
+                    else:
+                        # If not wrapping the edges
+                        if 0 <= nx < len(grid) and 0 <= ny < len(grid):
+                            count += grid[nx][ny]
             return count
 
 
@@ -90,5 +101,8 @@ class GridService:
 
     def update_cell(self, i, j):
         self.grid[i][j] = abs(self.grid[i][j] - 1)
+
+    def update_wrap(self):
+        self.wrap = not self.wrap
 
 

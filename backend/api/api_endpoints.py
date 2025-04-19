@@ -18,7 +18,7 @@ async def get_current_grid() -> GridResponse:
         GridResponse: The current grid state including the grid data and number of steps taken
     """
     logger.info(f"Got touch request")
-    return GridResponse.from_grid(grid_service.grid, grid_service.steps)
+    return GridResponse.from_grid(grid_service.grid, grid_service.steps, grid_service.wrap)
 
 @router.post("/randomize", response_model=GridResponse)
 async def get_random_grid() -> GridResponse:
@@ -29,7 +29,7 @@ async def get_random_grid() -> GridResponse:
         GridResponse: A new randomly generated grid (with step count of 0)
     """
     logger.info(f"Got a randomize grid request")
-    return GridResponse.from_grid(grid_service.randomize_grid(), 0)
+    return GridResponse.from_grid(grid_service.randomize_grid(), 0, grid_service.wrap)
 
 
 @router.post("/next", response_model=GridResponse)
@@ -42,7 +42,7 @@ async def get_next_step() -> GridResponse:
     """
     logger.info("Received next step request")
     grid_service.next_step()
-    return GridResponse.from_grid(grid_service.grid, grid_service.steps)
+    return GridResponse.from_grid(grid_service.grid, grid_service.steps, grid_service.wrap)
 
 
 @router.post("/clear", response_model=GridResponse)
@@ -54,7 +54,7 @@ async def clear_grid() -> GridResponse:
         GridResponse: The cleared grid (with step count of 0)
     """
     logger.info("Received clearing request")
-    return GridResponse.from_grid(grid_service.clear(), 0)
+    return GridResponse.from_grid(grid_service.clear(), 0, grid_service.wrap)
 
 @router.put("/update", response_model=dict)
 async def update_grid(request: Request) -> JSONResponse | HTTPException:
@@ -88,4 +88,11 @@ async def update_grid(request: Request) -> JSONResponse | HTTPException:
     except Exception as e:
         logger.error(f"Error while updating grid: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+@router.post("/wrap", response_model=GridResponse)
+async def update_wrap() -> GridResponse:
+    grid_service.update_wrap()
+    return GridResponse.from_grid(grid_service.grid, grid_service.steps, grid_service.wrap)
+
 
