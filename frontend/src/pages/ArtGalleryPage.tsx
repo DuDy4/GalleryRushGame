@@ -1,7 +1,6 @@
 import ButtonsLayout from "../components/ButtonsLayout"
 import GridDisplay from "../components/GridDisplay.tsx";
 
-const GRID_SIZE = 20
 
 export default function ArtGalleryPage() {
 
@@ -10,20 +9,12 @@ export default function ArtGalleryPage() {
     <div className="flex flex-col items-center min-h-screen p-4 bg-gray-50">
       <h1 className="text-3xl font-bold mb-2 text-gray-800">Art Gallery District</h1>
       <p className="text-gray-600 mb-6 text-center max-w-2xl">
-          This is my attempt in creating a fun and interesting game of "Gallery Rush"
-      </p>
+          <h2>This is a fun game of "Gallery Rush".</h2>
+          Try and win the game by extinct all galleries, get stuck in a static grid-state or enter a loop
+      </p><br/>
 
       <ButtonsLayout />
-
-          <div
-              className="grid gap-[1px]"
-              style={{
-                  gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(0, 1fr))`,
-                  width: "fit-content",
-              }}
-          >
-              <GridDisplay/>
-          </div>
+      <GridDisplay />
     </div>
   )
 }

@@ -32,6 +32,8 @@ export const useGrid = () => {
 }
 
 export const GridProvider = ({ children }: { children: React.ReactNode }) => {
+  //This is the heavy lifter provider. All connection to the backend will be done from here.
+
   const [grid, setGrid] = useState<boolean[][]>([])
   const [stepCount, setStepCount] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)

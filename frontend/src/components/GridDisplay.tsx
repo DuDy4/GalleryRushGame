@@ -4,6 +4,7 @@ import { Box, Typography } from "@mui/material"
 export default function GridDisplay() {
     const { grid, toggleCell, winReason, removeWinReason } = useGrid()
 
+    {/* In case the backend is down */}
     if (!(grid && grid.length)) {
         return (
             <Box

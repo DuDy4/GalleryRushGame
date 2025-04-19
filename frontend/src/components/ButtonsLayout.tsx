@@ -1,5 +1,5 @@
 import { Button, Slider, Stack, Typography } from "@mui/material"
-import { PlayArrow, Pause, Refresh, Replay, Close, Loop, LockClockRounded } from "@mui/icons-material"
+import { PlayArrow, Pause, Refresh, Replay, Close, Loop, History, Autorenew } from "@mui/icons-material"
 import { useGrid } from "../providers/GridProvider"
 import { useEffect } from "react";
 
@@ -41,6 +41,8 @@ export default function ButtonsLayout() {
     return () => window.removeEventListener("keydown", handleKey)
   }, [randomize, clear, step, togglePlay])
 
+
+  //Will return two rows of buttons - each on a different <Stack/>.
   return (
     <Stack spacing={3} alignItems="center" width="100%">
       <Stack direction="row" spacing={2} justifyContent="center" flexWrap="wrap" sx={{ rowGap: 2 }} // or gap: 2 to cover both directions
@@ -64,7 +66,7 @@ export default function ButtonsLayout() {
               onClick={stepBack}
               variant={isTimeTraveling ? "contained" : "outlined"}
               color={isTimeTraveling ? "error" : "primary"}
-              startIcon={<Replay />}
+              startIcon={isTimeTraveling ? <Replay className="flipped" /> : <Replay />}
               >Step back (S)</Button>)
             }
             </>
@@ -92,13 +94,14 @@ export default function ButtonsLayout() {
             onClick={toggleTimeTraveling}
             variant={isTimeTraveling ? "contained" : "outlined"}
             color={isTimeTraveling ? "error" : "primary"}
-            startIcon={<LockClockRounded />}
+            startIcon={isTimeTraveling ? <Autorenew className="spin" /> : <History />}
         >
           {isTimeTraveling ? "Back to regular time" : "Reverse-Time"} (t)
         </Button>
       </Stack>
 
-      {/* Speed + info */}
+      {/* This is the score presenter - both how many steps (rounds) there was, and how many gallery-districts
+       are active now.*/}
       <Stack direction="row" spacing={3} alignItems="center" justifyContent="center" flexWrap="wrap">
         <Typography variant="body2">Speed:</Typography>
         <Slider
@@ -111,7 +114,7 @@ export default function ButtonsLayout() {
         />
         <Typography variant="body2">{speed.toFixed(1)}s</Typography>
         <Typography variant="body2">
-          Generation: <b>{stepCount}</b>
+          Rounds: <b>{stepCount}</b>
         </Typography>
         <Typography variant="body2">
           Active Galleries: <b>{grid && grid.flat().filter(Boolean).length}</b>
