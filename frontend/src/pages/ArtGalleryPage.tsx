@@ -1,6 +1,4 @@
-import { useEffect } from "react"
 import ButtonsLayout from "../components/ButtonsLayout"
-import { useGrid } from "../providers/GridProvider"
 import GridDisplay from "../components/GridDisplay.tsx";
 
 const GRID_SIZE = 20

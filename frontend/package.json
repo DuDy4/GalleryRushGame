@@ -16,13 +16,13 @@
     "@mui/material": "^7.0.2",
     "axios": "^1.8.4",
     "lucide-react": "^0.493.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
+    "@types/react": "^18.3.20",
+    "@types/react-dom": "^18.3.6",
     "@vitejs/plugin-react-swc": "^3.8.0",
     "eslint": "^9.22.0",
     "eslint-plugin-react-hooks": "^5.2.0",

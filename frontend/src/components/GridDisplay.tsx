@@ -1,4 +1,3 @@
-import React from "react"
 import { useGrid } from "../providers/GridProvider"
 import { Box } from "@mui/material"
 
@@ -46,24 +45,27 @@ export default function GridDisplay() {
                     gap: "1px",                   // spacing between cells
                 }}
             >
-                {grid.map((row, i) =>
-                    row.map((cell, j) => (
-                        <Box
-                            key={`${i}-${j}`}
-                            onClick={() => toggleCell(i, j)}
-                            sx={{
-                                backgroundColor: cell ? "success.main" : "white",
-                                "&:hover": {
-                                    backgroundColor: cell ? "success.dark" : "grey.200",
-                                },
-                                aspectRatio: "1 / 1",
-                                width: "100%",
-                                cursor: "pointer",
-                                transition: "background-color 0.2s",
-                            }}
-                        />
-                    ))
-                )}
+                <>
+                    {
+                        grid.map((row, i) =>
+                        row.map((cell, j) => (
+                            <Box
+                                key={`${i}-${j}`}
+                                onClick={() => toggleCell(i, j)}
+                                sx={{
+                                    backgroundColor: cell ? "success.main" : "white",
+                                    "&:hover": {
+                                        backgroundColor: cell ? "success.dark" : "grey.200",
+                                    },
+                                    aspectRatio: "1 / 1",
+                                    width: "100%",
+                                    cursor: "pointer",
+                                    transition: "background-color 0.2s",
+                                }}
+                            />
+                        ))
+                    )}
+                </>
             </Box>
         </Box>
     )
