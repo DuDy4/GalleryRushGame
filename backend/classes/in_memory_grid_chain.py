@@ -1,4 +1,6 @@
-from utils.models import GridType
+import hashlib
+
+from utils.models import GridType, WinException
 
 class GridNode:
 
@@ -15,8 +17,26 @@ class InMemoryGridChain:
     def __init__(self):
         self.head: GridNode | None = None
         self.length = 0
+        self.hash_set = set()
+
+    def hash_grid(self, grid: GridType) -> str:
+        grid_str = ''.join(''.join(map(str, row)) for row in grid)
+        return hashlib.md5(grid_str.encode()).hexdigest()
+
+    def check_win(self, grid: GridType):
+        grid_hash = self.hash_grid(grid)
+        if grid_hash in self.hash_set:
+            return True
+        self.hash_set.add(grid_hash)
+        return False
+
+    def pop_hash(self, grid: GridType):
+        grid_hash = self.hash_grid(grid)
+        self.hash_set.remove(grid_hash)
 
     def push(self, node: GridNode) -> None:
+        if self.check_win(node.grid):
+            raise WinException()
         if not isinstance(node,GridNode):
             return
         if not self.head:
@@ -36,8 +56,10 @@ class InMemoryGridChain:
         last_grid_node = self.head
         self.head = last_grid_node.next
         self.length -= 1
-        return last_grid_node.grid if last_grid_node else None
+        self.pop_hash(last_grid_node.grid)
+        return last_grid_node.grid
 
     def reset(self) -> None:
         self.head = None
         self.length = 0
+        self.hash_set.clear()

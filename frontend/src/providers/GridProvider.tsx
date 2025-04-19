@@ -10,6 +10,8 @@ type GridContextType = {
   isWrapped: boolean
   isTimeTraveling: boolean
   speed: number
+  winReason: string
+  removeWinReason: () => void
   setSpeed: (s: number) => void
   randomize: () => void
   clear: () => void
@@ -36,14 +38,22 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
   const [isWrapped, setIsWrapped] = useState(false)
   const [isTimeTraveling, setIsTimeTraveling] = useState(false)
   const [speed, setSpeed] = useState(1)
+  const [winReason, setWinReason] = useState("")
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const fetchGrid = async (endpoint: string) => {
     try {
       const res = await axios.post(`${API_BASE}${endpoint}`)
-      setGrid(res.data.grid)
-      setStepCount(res.data.steps)
-      setIsWrapped(res.data.wrap)
+      const data = res.data
+      if (!data) return null
+      if (data.win_reason){
+        console.log(data.win_reason)
+        setWinReason(data.win_reason)
+        setIsPlaying(false)
+      }
+      setGrid(data.grid)
+      setStepCount(data.steps)
+      setIsWrapped(data.wrap)
     } catch (err) {
       console.error(`Failed to fetch ${endpoint}`, err)
     }
@@ -69,6 +79,9 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
     fetchGrid("/previous")
   }
 
+  const removeWinReason = () => {
+    setWinReason("")
+  }
 
   //This is the request for the current grid
   const touch = async () => {
@@ -140,6 +153,8 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
         isWrapped,
         isTimeTraveling,
         speed,
+        winReason,
+        removeWinReason,
         setSpeed,
         randomize,
         clear,

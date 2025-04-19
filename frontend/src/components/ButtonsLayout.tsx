@@ -43,7 +43,8 @@ export default function ButtonsLayout() {
 
   return (
     <Stack spacing={3} alignItems="center" width="100%">
-      <Stack direction="row" spacing={2} justifyContent="center" flexWrap="wrap">
+      <Stack direction="row" spacing={2} justifyContent="center" flexWrap="wrap" sx={{ rowGap: 2 }} // or gap: 2 to cover both directions
+      >
         <Button onClick={randomize} variant="outlined" startIcon={<Refresh />}>Randomize (R)</Button>
         <Button
           onClick={clear}
@@ -78,7 +79,7 @@ export default function ButtonsLayout() {
         </Button>
 
       </Stack>
-      <Stack direction="row" spacing={2} justifyContent="center" flexWrap="wrap">
+      <Stack direction="row" spacing={2} justifyContent="center" flexWrap="wrap" sx={{ rowGap: 2 }} >
         <Button
             onClick={toggleWrap}
             variant={isWrapped ? "contained" : "outlined"}

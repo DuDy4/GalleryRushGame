@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Request, HTTPException
 from loguru import logger
 from services.grid_service import GridService
-from api.api_response_models import GridResponse
+from api.api_response_models import GridResponse, WinGridResponse
 from starlette.responses import JSONResponse
+from utils.models import WinException
 
 router = APIRouter(prefix="/api")
 
@@ -32,16 +33,21 @@ async def get_random_grid() -> GridResponse:
     return GridResponse.from_grid(*grid_service.randomize_grid())
 
 
-@router.post("/next", response_model=GridResponse)
-async def get_next_step() -> GridResponse:
+@router.post("/next", response_model=GridResponse | WinGridResponse)
+async def get_next_step() -> GridResponse | WinGridResponse:
     """
     Compute and return the next step in the grid's evolution.
     
     Returns:
         GridResponse: The grid state after computing the next step
     """
-    logger.info("Received next step request")
-    return GridResponse.from_grid(*grid_service.next_step())
+    try:
+        logger.info("Received next step request")
+        return GridResponse.from_grid(*grid_service.next_step())
+    except WinException as e:
+        logger.info(f"Player won! {e.reason.value}")
+        return WinGridResponse.from_grid(*grid_service.get_grid_attributes(), e.reason.value)
+
 
 @router.post("/previous", response_model=GridResponse)
 async def get_previous_step() -> GridResponse:

@@ -1,4 +1,4 @@
-from utils.models import GridType
+from utils.models import GridType, WinException, WinReason
 from classes.grid import Grid
 from classes.in_memory_grid_chain import InMemoryGridChain, GridNode
 
@@ -19,8 +19,12 @@ class GridService:
 
 
     def next_step(self) -> [GridType, int, bool]:
-        self.grid_memo.push(GridNode(self.grid_instance.grid))
-        return self.grid_instance.next_step()
+        try:
+            self.grid_memo.push(GridNode(self.grid_instance.grid))
+            return self.grid_instance.next_step()
+        except WinException as e:
+            reason = self.handle_win_condition(e)
+            raise WinException(reason)
 
     def previous_step(self) -> [GridType, int, bool]:
         if self.grid_instance.steps <= 0 or self.grid_memo.length <= 0:
@@ -37,3 +41,20 @@ class GridService:
 
     def update_wrap(self):
         self.grid_instance.update_wrap()
+
+    def handle_win_condition(self, error: WinException):
+        current_grid = self.grid_instance.grid
+        last_grid_node = self.grid_memo.head  # The last node inserted - if there is one
+
+        if all(cell == 0 for row in current_grid for cell in row):
+            reason = WinReason.EXTINCTION
+
+        elif last_grid_node and current_grid == last_grid_node.grid:
+            # Exact same as last grid → static
+            reason = WinReason.STATIC
+
+        else:
+            # Grid has changed, but it’s repeating → cycle
+            reason = WinReason.CYCLE
+        return reason
+
