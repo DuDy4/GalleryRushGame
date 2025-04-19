@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react"
 import axios from "axios"
 
-const GRID_SIZE = 20
-const API_BASE = "http://localhost:8000/api" // <-- Replace with your actual backend
+const API_BASE: string = import.meta.env.VITE_API_URL
 
 type GridContextType = {
   grid: boolean[][]
@@ -30,7 +29,7 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
   const [stepCount, setStepCount] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [speed, setSpeed] = useState(1)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const fetchGrid = async (endpoint: string) => {
     try {
@@ -73,10 +72,19 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
     setIsPlaying((prev) => !prev)
   }
 
+  const update = async (i: number, j: number) => {
+    try {
+      await axios.put(`${API_BASE}/update`, {"position": [i, j] })
+    } catch (err) {
+      console.error(`Failed to update edition`, err)
+    }
+  }
+
   const toggleCell = (i: number, j: number) => {
     setGrid((g) => {
       const newGrid = g.map((row) => [...row])
       newGrid[i][j] = !newGrid[i][j]
+      update(i, j)
       return newGrid
     })
   }

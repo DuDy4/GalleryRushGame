@@ -5,9 +5,7 @@ import App from './App.tsx'
 import {GridProvider} from "./providers/GridProvider.tsx";
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-      <GridProvider>
-          <App />
-      </GridProvider>
-  </StrictMode>,
+  <GridProvider>
+      <App />
+  </GridProvider>
 )
