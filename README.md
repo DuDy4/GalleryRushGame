@@ -3,6 +3,9 @@ Gallery Rush is a simulation-style game. The grid represents a network of art ga
 
 Built as a Fullstack web app using FastAPI, React (Typescript) & Docker.
 
+You can see deployment here: 'https://gallery-rush-game.vercel.app/'
+(might need to wait 15 seconds for backend to warm-up here: 'https://galleryrushgame.onrender.com/')
+
 🛠️ Getting Started
 1. Clone the repository
 git clone git@github.com:DanShevel/GalleryRushGame.git
