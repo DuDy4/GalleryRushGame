@@ -1,3 +1,3 @@
 from typing import List, TypeAlias
 
-Grid: TypeAlias = List[List[int]]
+GridType: TypeAlias = List[List[int]]

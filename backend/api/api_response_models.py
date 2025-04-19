@@ -1,13 +1,12 @@
-from typing import List
-from utils.models import Grid
+from utils.models import GridType
 from pydantic import BaseModel
 
 class GridResponse(BaseModel):
-    grid: Grid
+    grid: GridType
     steps: int
     wrap: bool
 
     @classmethod
-    def from_grid(cls, grid: Grid, steps, wrap):
+    def from_grid(cls, grid: GridType, steps, wrap):
         return cls(grid=grid, steps=steps, wrap=wrap)
 
