@@ -1,12 +1,12 @@
 from typing import List
-
+from utils.models import Grid
 from pydantic import BaseModel
 
 class GridResponse(BaseModel):
-    grid: List[List[int]]
+    grid: Grid
     steps: int
 
     @classmethod
-    def from_grid(cls, grid: List[List[int]], steps):
+    def from_grid(cls, grid: Grid, steps):
         return cls(grid=grid, steps=steps)
 

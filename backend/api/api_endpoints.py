@@ -1,5 +1,3 @@
-from urllib.error import HTTPError
-
 from fastapi import APIRouter, Request, HTTPException
 from loguru import logger
 from services.grid_service import GridService
@@ -35,7 +33,7 @@ async def get_next_step() -> GridResponse:
     Compute the next grid step and return it.
     """
     logger.info("Received next step request")
-    grid_service.grid = grid_service.next_step(grid_service.grid)
+    grid_service.next_step()
     return GridResponse.from_grid(grid_service.grid, grid_service.steps)
 
 
@@ -58,12 +56,9 @@ async def update_grid(request: Request) -> JSONResponse | HTTPException:
         position = payload.get("position")
         if not position or len(position) != 2:
             raise HTTPException(status_code=400, detail="Invalid or missing 'position' in payload")
-
         i, j = position[0], position[1]
-        logger.debug(grid_service.grid[i][j])
         grid_service.update_cell(i, j)
-        logger.debug(grid_service.grid[i][j])
-
+        logger.info(f"Updated cell in position [{i}][{j}]")
         return JSONResponse(status_code=200, content="Updated grid successfully")
     except Exception as e:
         logger.error(f"Error while updating grid: {e}")
