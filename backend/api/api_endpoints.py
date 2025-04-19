@@ -12,8 +12,10 @@ grid_service = GridService()
 @router.get("/", response_model=GridResponse)
 async def get_current_grid() -> GridResponse:
     """
-    Get the current grid in the server
-    :return: GridResponse
+    Get the current state of the grid.
+    
+    Returns:
+        GridResponse: The current grid state including the grid data and number of steps taken
     """
     logger.info(f"Got touch request")
     return GridResponse.from_grid(grid_service.grid, grid_service.steps)
@@ -21,7 +23,10 @@ async def get_current_grid() -> GridResponse:
 @router.post("/randomize", response_model=GridResponse)
 async def get_random_grid() -> GridResponse:
     """
-    Get a new randomize grid_service.py.
+    Generate a new randomized grid.
+    
+    Returns:
+        GridResponse: A new randomly generated grid (with step count of 0)
     """
     logger.info(f"Got a randomize grid request")
     return GridResponse.from_grid(grid_service.randomize_grid(), 0)
@@ -30,7 +35,10 @@ async def get_random_grid() -> GridResponse:
 @router.post("/next", response_model=GridResponse)
 async def get_next_step() -> GridResponse:
     """
-    Compute the next grid step and return it.
+    Compute and return the next step in the grid's evolution.
+    
+    Returns:
+        GridResponse: The grid state after computing the next step
     """
     logger.info("Received next step request")
     grid_service.next_step()
@@ -40,7 +48,10 @@ async def get_next_step() -> GridResponse:
 @router.post("/clear", response_model=GridResponse)
 async def clear_grid() -> GridResponse:
     """
-    Clear the grid to all zeros.
+    Reset the grid to *all zeros* state.
+    
+    Returns:
+        GridResponse: The cleared grid (with step count of 0)
     """
     logger.info("Received clearing request")
     return GridResponse.from_grid(grid_service.clear(), 0)
@@ -48,8 +59,22 @@ async def clear_grid() -> GridResponse:
 @router.put("/update", response_model=dict)
 async def update_grid(request: Request) -> JSONResponse | HTTPException:
     """
-    Update the grid manually by the user (toggling)
-    :return:
+    Update a specific cell in the grid to the opposite value.
+    
+    Args:
+        request (Request): The request containing the position to update
+        
+    Request Body:
+        {
+            "position": [int, int]  # The [i, j] coordinates of the cell to update
+        }
+        
+    Returns:
+        JSONResponse: Success message if update was successful
+        
+    Raises:
+        HTTPException: 400 if position is invalid or missing
+        HTTPException: 500 if an internal error occurs
     """
     try:
         payload = await request.json()
