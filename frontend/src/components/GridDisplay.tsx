@@ -4,7 +4,7 @@ import { Box } from "@mui/material"
 export default function GridDisplay() {
     const { grid, toggleCell } = useGrid()
 
-    if (!grid.length) {
+    if (!(grid && grid.length)) {
         return (
             <Box
                 sx={{

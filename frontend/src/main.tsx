@@ -4,7 +4,7 @@ import App from './App.tsx'
 import {GridProvider} from "./providers/GridProvider.tsx";
 
 createRoot(document.getElementById('root')!).render(
-  <GridProvider>
-      <App />
-  </GridProvider>
+    <GridProvider>
+        <App />
+    </GridProvider>
 )
