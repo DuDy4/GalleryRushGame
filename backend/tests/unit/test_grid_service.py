@@ -22,12 +22,14 @@ def test_count_neighbors_range(grid_service, request, grid_fixture_name):
     "full_grid"
 ])
 def test_next_step_shape_preserved(grid_service, request, grid_fixture_name):
-    grid = request.getfixturevalue(grid_fixture_name)
-    new_grid = grid_service.next_step(grid)
+    start_grid = grid_service.grid
+    start_steps = grid_service.steps
+    new_grid = grid_service.next_step()
 
-    assert len(new_grid) == len(grid)
+    assert len(new_grid) == len(start_grid)
     for row in new_grid:
-        assert len(row) == len(grid[0])
+        assert len(row) == len(start_grid[0])
+    assert grid_service.steps == start_steps + 1
 
 def test_randomize_grid_creates_valid_grid(grid_service):
     grid = grid_service.randomize_grid()
