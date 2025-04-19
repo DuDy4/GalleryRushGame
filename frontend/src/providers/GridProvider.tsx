@@ -45,6 +45,7 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchGrid = async (endpoint: string) => {
     try {
+      setWinReason("")
       const res = await axios.post(`${API_BASE}${endpoint}`)
       const data = res.data
       if (!data) return null
