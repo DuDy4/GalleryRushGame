@@ -17,7 +17,7 @@ Built as a Fullstack web app using **FastAPI**, **React (TypeScript)**, and **Do
 git clone git@github.com:DanShevel/GalleryRushGame.git
 cd GalleryRushGame
 
-3. Run Docker:
+2. Run Docker:
 There is a script for bash or powershell.
 Bash: ./start.sh
 Powershell: .\start.ps1
@@ -31,7 +31,7 @@ III. Run the two images.
 
 🔵 Backend: http://localhost:8000
 
-4. Without Docker?
+3. Without Docker?
 Run in separate terminals:
 
     cd ./backend
