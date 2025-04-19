@@ -1,5 +1,5 @@
 import { Button, Slider, Stack, Typography } from "@mui/material"
-import { PlayArrow, Pause, Refresh, Replay, Close, Loop } from "@mui/icons-material"
+import { PlayArrow, Pause, Refresh, Replay, Close, Loop, LockClockRounded } from "@mui/icons-material"
 import { useGrid } from "../providers/GridProvider"
 import { useEffect } from "react";
 
@@ -7,6 +7,7 @@ export default function ButtonsLayout() {
   const {
     isPlaying,
     isWrapped,
+    isTimeTraveling,
     speed,
     setSpeed,
     stepCount,
@@ -14,8 +15,10 @@ export default function ButtonsLayout() {
     randomize,
     clear,
     step,
+    stepBack,
     togglePlay,
     toggleWrap,
+    toggleTimeTraveling,
   } = useGrid()
 
   //This useEffect start listening to keyboard for the keys we defined -
@@ -30,6 +33,7 @@ export default function ButtonsLayout() {
         case "s": step(); break
         case "w": toggleWrap(); break
         case "p": togglePlay(); break
+        case "t": toggleTimeTraveling(); break
       }
     }
 
@@ -48,13 +52,22 @@ export default function ButtonsLayout() {
         >
           Clear (C)
         </Button>
-        <Button
-          onClick={step}
-          variant="outlined"
-          startIcon={<Replay />}
-        >
-          Step (S)
-        </Button>
+        <>
+        { !isTimeTraveling ?
+            (<Button
+              onClick={step}
+              variant="outlined"
+              startIcon={<Replay />}
+            > Step (S)</Button>) :
+              (<Button
+              onClick={stepBack}
+              variant={isTimeTraveling ? "contained" : "outlined"}
+              color={isTimeTraveling ? "error" : "primary"}
+              startIcon={<Replay />}
+              >Step back (S)</Button>)
+            }
+            </>
+
         <Button
           onClick={togglePlay}
           variant={isPlaying ? "contained" : "outlined"}
@@ -63,6 +76,9 @@ export default function ButtonsLayout() {
         >
           {isPlaying ? "Pause" : "Play"} (p)
         </Button>
+
+      </Stack>
+      <Stack direction="row" spacing={2} justifyContent="center" flexWrap="wrap">
         <Button
             onClick={toggleWrap}
             variant={isWrapped ? "contained" : "outlined"}
@@ -70,6 +86,14 @@ export default function ButtonsLayout() {
             startIcon={<Loop />}
         >
           {isWrapped ? "Unwrap" : "Wrap"} (w)
+        </Button>
+        <Button
+            onClick={toggleTimeTraveling}
+            variant={isTimeTraveling ? "contained" : "outlined"}
+            color={isTimeTraveling ? "error" : "primary"}
+            startIcon={<LockClockRounded />}
+        >
+          {isTimeTraveling ? "Back to regular time" : "Reverse-Time"} (t)
         </Button>
       </Stack>
 

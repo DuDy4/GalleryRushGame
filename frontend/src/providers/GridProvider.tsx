@@ -8,14 +8,17 @@ type GridContextType = {
   stepCount: number
   isPlaying: boolean
   isWrapped: boolean
+  isTimeTraveling: boolean
   speed: number
   setSpeed: (s: number) => void
   randomize: () => void
   clear: () => void
   step: () => void
+  stepBack: () => void
   togglePlay: () => void
   toggleWrap: () => void
   toggleCell: (i: number, j: number) => void
+  toggleTimeTraveling: () => void
 }
 
 const GridContext = createContext<GridContextType | null>(null)
@@ -31,6 +34,7 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
   const [stepCount, setStepCount] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isWrapped, setIsWrapped] = useState(false)
+  const [isTimeTraveling, setIsTimeTraveling] = useState(false)
   const [speed, setSpeed] = useState(1)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -61,6 +65,10 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
     await fetchGrid("/wrap")
   }
 
+  const stepBack = () => {
+    fetchGrid("/previous")
+  }
+
 
   //This is the request for the current grid
   const touch = async () => {
@@ -79,6 +87,10 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
 
   const toggleWrap = async () => {
     await wrap()
+  }
+
+  const toggleTimeTraveling = () => {
+    setIsTimeTraveling((prev) => !prev)
   }
 
   const update = async (i: number, j: number) => {
@@ -105,7 +117,7 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (isPlaying) {
       intervalRef.current = setInterval(() => {
-        step()
+        isTimeTraveling ? stepBack() : step()
       }, speed * 1000)
     } else {
       if (intervalRef.current) {
@@ -117,7 +129,7 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
-  }, [isPlaying, speed])
+  }, [isPlaying, isTimeTraveling, speed])
 
   return (
     <GridContext.Provider
@@ -126,14 +138,17 @@ export const GridProvider = ({ children }: { children: React.ReactNode }) => {
         stepCount,
         isPlaying,
         isWrapped,
+        isTimeTraveling,
         speed,
         setSpeed,
         randomize,
         clear,
         step,
+        stepBack,
         togglePlay,
         toggleCell,
         toggleWrap,
+        toggleTimeTraveling,
       }}
     >
       {children}
