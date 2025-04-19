@@ -16,7 +16,7 @@ class InMemoryGridChain:
         self.head: GridNode | None = None
         self.length = 0
 
-    def push(self, node: GridNode):
+    def push(self, node: GridNode) -> None:
         if not isinstance(node,GridNode):
             return
         if not self.head:
@@ -28,7 +28,7 @@ class InMemoryGridChain:
         self.length += 1
         return
 
-    def pop(self):
+    def pop(self) -> GridType:
         if not self.head:
             return
         if self.length <= 0:
@@ -36,8 +36,8 @@ class InMemoryGridChain:
         last_grid_node = self.head
         self.head = last_grid_node.next
         self.length -= 1
-        return last_grid_node
+        return last_grid_node.grid if last_grid_node else None
 
-    def reset(self):
+    def reset(self) -> None:
         self.head = None
         self.length = 0

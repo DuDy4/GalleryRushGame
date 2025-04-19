@@ -43,6 +43,17 @@ async def get_next_step() -> GridResponse:
     logger.info("Received next step request")
     return GridResponse.from_grid(*grid_service.next_step())
 
+@router.post("/previous", response_model=GridResponse)
+async def get_previous_step() -> GridResponse:
+    """
+    Popping the previous step from memory.
+
+    Returns:
+        GridResponse: The grid state of the previous step
+    """
+    logger.info("Received previous step request")
+    return GridResponse.from_grid(*grid_service.previous_step())
+
 
 @router.post("/clear", response_model=GridResponse)
 async def clear_grid() -> GridResponse:

@@ -11,15 +11,15 @@ class Grid:
         self.wrap: bool = False
         self.randomize_grid()  # This will assign new grid to self.grid
 
-    def get_grid_attributes(self):
+    def get_grid_attributes(self) -> [GridType, int, bool]:
         return [self.grid, self.steps, self.wrap]
 
-    def randomize_grid(self) -> GridType:
+    def randomize_grid(self) -> [GridType, int, bool]:
         self.grid = [[randint(0,1) for _ in range(CURRENT_SIZE)] for _ in range(CURRENT_SIZE)]
         self.steps = 0
         return self.get_grid_attributes()
 
-    def next_step(self) -> GridType:
+    def next_step(self) -> [GridType, int, bool]:
         """
         The way this method works is:
         1. Using count_neighbours (helper) function to calculate the business of the area.
@@ -85,7 +85,14 @@ class Grid:
         self.steps += 1
         return self.get_grid_attributes()
 
-    def clear(self) -> GridType:
+    def previous_step(self, grid: GridType):
+        if self.steps <= 0:
+            raise Exception("Should not have got here: Returning steps in Grid Class when there is no steps left")
+        self.grid = grid
+        self.steps -= 1
+        return self.get_grid_attributes()
+
+    def clear(self) -> [GridType, int, bool]:
         self.grid = [[0 for _ in range(len(self.grid))] for _ in range(len(self.grid))]
         self.steps = 0
         return self.get_grid_attributes()
