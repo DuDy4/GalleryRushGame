@@ -14,13 +14,15 @@ Built as a Fullstack web app using **FastAPI**, **React (TypeScript)**, and **Do
 
 ### 1. Clone the repository
 
+```
 git clone git@github.com:DanShevel/GalleryRushGame.git
 cd GalleryRushGame
+```
 
 2. Run Docker:
 There is a script for bash or powershell.
-Bash: ./start.sh
-Powershell: .\start.ps1
+Bash: ```./start.sh```
+Powershell: ```.\start.ps1```
 
 This should:
 I. Run the pytest on the backend.
@@ -34,21 +36,26 @@ III. Run the two images.
 3. Without Docker?
 Run in separate terminals:
 
+    ```
     cd ./backend
     pip i -f requirements.txt
     python ./start_api.py
+   ```
 
     &
 
+    ```
     cd ./frontend
     npm i
     npm run build
     npm run dev
+    ```
 
 🟢 Frontend: http://localhost:5173
 
 🔵 Backend: http://localhost:8000
 
+```
 📦 Project Structure
 GalleryRushGame/
 ├── backend/         # FastAPI app
@@ -57,7 +64,7 @@ GalleryRushGame/
 │   └── src/         # Grid UI and controls
 ├── docker-compose.yml
 └── README.md (<- You are here :P )
-
+```
 
 🧪 API Endpoints (visit http://localhost:8000 for swagger)
 
