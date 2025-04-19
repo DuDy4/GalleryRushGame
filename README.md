@@ -14,7 +14,6 @@ Built as a Fullstack web app using **FastAPI**, **React (TypeScript)**, and **Do
 
 ### 1. Clone the repository
 
-```bash
 git clone git@github.com:DanShevel/GalleryRushGame.git
 cd GalleryRushGame
 
