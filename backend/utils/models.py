@@ -4,8 +4,8 @@ from enum import Enum
 GridType: TypeAlias = List[List[int]]
 
 class WinReason(str, Enum):
-    STATIC = "You got to a static state!"
-    CYCLE = "You found yourself in a cycle. Nice!"
+    STATIC = "You got to a static state! Some district are probably more artistic then others ¯\_(ツ)_/¯"
+    CYCLE = "You found yourself in a cycle. Art districts go!"
     EXTINCTION = "All galleries were closed... Nobody care about art anymore :("
 
 class WinException(Exception):
