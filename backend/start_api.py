@@ -40,7 +40,7 @@ async def exception_handler(request: Request, exc: Exception):
 @app.get("/", response_class=RedirectResponse)
 def read_root(request: Request):
     """
-    This will redirect the user to the swagger page, explaining the different endpoints
+    This will redirect the user to the swagger page, explaining the different endpoints.
 
     :param request:
     :return:

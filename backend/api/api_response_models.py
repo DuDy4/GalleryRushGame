@@ -11,6 +11,9 @@ class GridResponse(BaseModel):
         return cls(grid=grid, steps=steps, wrap=wrap)
 
 class WinGridResponse(BaseModel):
+    """
+    This response will be sent - instead of the GridResponse - in case of win condition
+    """
     grid: GridType
     steps: int
     wrap: bool

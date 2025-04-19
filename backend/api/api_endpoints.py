@@ -108,6 +108,10 @@ async def update_grid(request: Request) -> JSONResponse | HTTPException:
 
 @router.post("/wrap", response_model=GridResponse)
 async def update_wrap() -> GridResponse:
+    """
+    This should toggle the wrap attribute, affecting the computing of next steps.
+    :return:
+    """
     grid_service.update_wrap()
     return GridResponse.from_grid(*grid_service.get_grid_attributes())
 
